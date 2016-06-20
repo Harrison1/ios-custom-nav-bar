@@ -8,11 +8,31 @@
 
 import UIKit
 
-class CustomeTabBarViewController: UITabBarController {
+class CustomTabBarViewController: UITabBarController, CustomTabBarDataSource, CustomTabBarDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        self.tabBar.hidden = true
+        
+        let customTabBar = CustomTabBar(frame: self.tabBar.frame)
+        customTabBar.datasource = self
+        customTabBar.delegate = self
+        customTabBar.setup()
+        self.view.addSubview(customTabBar)
+
+    }
+    
+    // MARK: - CustomTabBarDataSource
+    
+    func tabBarItemsInCustomTabBar(tabBarView: CustomTabBar) -> [UITabBarItem] {
+        return tabBar.items!
+    }
+    
+    // MARK: - CustomTabBarDelegate
+    
+    func didSelectViewController(tabBarView: CustomTabBar, atIndex index: Int) {
+        self.selectedIndex = index
     }
 
     override func didReceiveMemoryWarning() {
